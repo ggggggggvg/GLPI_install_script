@@ -25,66 +25,6 @@ else
 fi
 }
 
-function check_distro()
-{
-# Constante pour les versions de Debian acceptables
-DEBIAN_VERSIONS=("11")
-
-# Constante pour les versions d'Ubuntu acceptables
-UBUNTU_VERSIONS=("22.04")
-
-# Récupération du nom de la distribution
-DISTRO=$(lsb_release -is)
-
-# Récupération de la version de la distribution
-VERSION=$(lsb_release -rs)
-
-# Vérifie si c'est une distribution Debian
-if [ "$DISTRO" == "Debian" ]; then
-        # Vérifie si la version de Debian est acceptable
-        else
-                warn "Your operating system version ($DISTRO $VERSION) is not noted as compatible."
-                warn "Do you still want to force the installation? Be careful, if you choose to force the script, it is at your own risk."
-                info "Are you sure you want to continue? [yes/no]"
-                read response
-                if [ $response == "yes" ]; then
-                info "Continuing..."
-                elif [ $response == "no" ]; then
-                info "Exiting..."
-                exit 1
-                else
-                warn "Invalid response. Exiting..."
-                exit 1
-                fi
-        fi
-
-# Vérifie si c'est une distribution Ubuntu
-elif [ "$DISTRO" == "Ubuntu" ]; then
-        # Vérifie si la version d'Ubuntu est acceptable
-        if [[ " ${UBUNTU_VERSIONS[*]} " == *" $VERSION "* ]]; then
-                info "Your operating system version ($DISTRO $VERSION) is compatible."
-        else
-                warn "Your operating system version ($DISTRO $VERSION) is not noted as compatible."
-                warn "Do you still want to force the installation? Be careful, if you choose to force the script, it is at your own risk."
-                info "Are you sure you want to continue? [yes/no]"
-                read response
-                if [ $response == "yes" ]; then
-                info "Continuing..."
-                elif [ $response == "no" ]; then
-                info "Exiting..."
-                exit 1
-                else
-                warn "Invalid response. Exiting..."
-                exit 1
-                fi
-        fi
-# Si c'est une autre distribution
-else
-        warn "Il s'agit d'une autre distribution que Debian ou Ubuntu qui n'est pas compatible."
-        exit 1
-fi
-}
-
 function network_info()
 {
 INTERFACE=$(ip route | awk 'NR==1 {print $5}')
